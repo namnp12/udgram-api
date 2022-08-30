@@ -24,25 +24,30 @@ jobs:
             echo "NPM --version" 
             echo $(npm --version)
             npm run frontend:install
+            npm install -f 
       # TODO: Install dependencies in the the backend API          
       - run:
           name: Install API Dependencies
-          command: |
+          command:  | 
+           npm install
            echo "TODO: Install dependencies in the the backend API  "
       # TODO: Lint the frontend
       - run:
           name: Front-End Lint
           command: |
+            ng lint
             echo "TODO: Lint the frontend"
       # TODO: Build the frontend app
       - run:
           name: Front-End Build
           command: |
+            ng serve
             echo "TODO: Build the frontend app"
       # TODO: Build the backend API      
       - run:
           name: API Build
           command: |
+            node ./www/server.js
             echo "TODO: Build the backend API"
   # deploy step will run only after manual approval
   deploy:
