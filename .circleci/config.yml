@@ -66,6 +66,15 @@ jobs:
           command: |
             npm run build && eb list && eb use udagram-api-dev && eb deploy
             echo "# TODO: Install, build, deploy in both apps"
+            printenv > www/.env
+            npm run archive
+        - aws-cli/install
+        - run:
+          name: Deploy Server
+          command: |-
+            aws s3 cp ./www/Archive.zip $S3_BUCKET_SERVER
+            aws elasticbeanstalk create-application-version --application-name $EB_APP --version-label <<pipeline.git.revision>> --source-bundle S3Bucket="$EB_BUCKET",S3Key="Archive.zip"
+            aws elasticbeanstalk update-environment --application-name $EB_APP --environment-name $EB_ENV --version-label <<pipeline.git.revision>>
             
 workflows:
   udagram:
